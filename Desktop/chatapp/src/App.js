@@ -6,17 +6,20 @@ import Signin from './pages/Signin';
 import Home from './pages/Home';
 import PrivateRoute from './Components/PrivateRoute';
 import PublicRoute from './Components/PublicRoute';
+import { ProfileProvider } from './context/profile.context';
 
 function App() {
   return (
-    <Switch>
-      <PublicRoute path="/signin">
-        <Signin />
-      </PublicRoute>
-      <PrivateRoute path="/">
-        <Home />
-      </PrivateRoute>
-    </Switch>
+    <ProfileProvider>
+      <Switch>
+        <PublicRoute path="/signin">
+          <Signin />
+        </PublicRoute>
+        <PrivateRoute path="/">
+          <Home />
+        </PrivateRoute>
+      </Switch>
+    </ProfileProvider>
   );
 }
 
