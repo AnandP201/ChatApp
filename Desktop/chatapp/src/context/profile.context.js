@@ -9,7 +9,6 @@ export const ProfileProvider = ({ children }) => {
 
   useEffect(() => {
     let userRef;
-
     const authUnSub = auth.onAuthStateChanged(authObj => {
       if (authObj) {
         userRef = database.ref(`/profiles/${authObj.uid}`);
