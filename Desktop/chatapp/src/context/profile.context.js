@@ -63,7 +63,7 @@ export const ProfileProvider = ({ children }) => {
         if (userStatusRef) {
           userStatusRef.off();
         }
-        database().ref('.info/connected').off();
+        firebase.database().ref('.info/connected').off();
         setProfile(null);
         setIsLoading(false);
       }
