@@ -30,6 +30,7 @@ const AvatarUpload = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const avatarEditorRef = useRef();
+
   const { profile } = useProfile();
 
   const onFileInputChange = (ev) => {
