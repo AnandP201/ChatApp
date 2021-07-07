@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Modal, Button, Alert } from 'rsuite';
+import { Modal, Button, Alert, Icon } from 'rsuite';
 import AvatarEditor from 'react-avatar-editor';
 import { useProfile } from '../../context/profile.context';
 import { useModalState } from '../../misc/custom.hooks';
@@ -30,7 +30,6 @@ const AvatarUpload = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const avatarEditorRef = useRef();
-
   const { profile } = useProfile();
 
   const onFileInputChange = (ev) => {
@@ -45,6 +44,25 @@ const AvatarUpload = () => {
         Alert.warning(`Wrong file type ${file.type}`, 4000);
       }
     }
+  };
+
+  const onDeleteAvatarClick = async () => {
+    if (!profile.avatar) {
+      Alert.info('No avatar present', 3000);
+      return;
+    }
+
+    await database
+      .ref(`/profiles/${profile.uid}`)
+      .child('avatar')
+      .remove()
+      .then(() => {
+        Alert.info('Avatar successfully removed', 3000);
+      });
+
+    const updates = await getUserUpdates(profile.uid, 'avatar', null, database);
+
+    database.ref().update(updates);
   };
 
   const onUploadClick = async () => {
@@ -102,6 +120,15 @@ const AvatarUpload = () => {
             onChange={onFileInputChange}
           />
         </label>
+        <Button
+          appearance="ghost"
+          className="mt-3"
+          color="yellow"
+          onClick={onDeleteAvatarClick}
+        >
+          <Icon icon="trash" />
+          &nbsp; Remove Avatar
+        </Button>
         <Modal show={isOpen} onHide={close}>
           <Modal.Header>
             <Modal.Title>Adjust and upload new avatar</Modal.Title>
