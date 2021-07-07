@@ -6,6 +6,7 @@ import { useHover } from '../../../misc/custom.hooks';
 import { auth } from '../../../misc/firebase';
 import PresenceDot from '../../PresenceDot';
 import ProfileAvatar from '../../ProfileAvatar';
+import IconBtnControl from './IconBtnControl';
 import ProfileInfoModel from './ProfileInfoModel';
 
 const MessageItem = ({ message, handleAdmin }) => {
@@ -50,6 +51,15 @@ const MessageItem = ({ message, handleAdmin }) => {
         <TimeAgo
           datetime={createdAt}
           className="font-normal text-black-45 ml-2"
+        />
+
+        <IconBtnControl
+          {...(true ? { color: 'red' } : {})}
+          isVisible
+          iconName="heart"
+          tooltip="Like this message"
+          onClick={() => {}}
+          bagdeContent={5}
         />
       </div>
       <div>
