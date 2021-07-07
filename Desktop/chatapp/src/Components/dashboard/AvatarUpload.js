@@ -32,6 +32,8 @@ const AvatarUpload = () => {
   const avatarEditorRef = useRef();
   const { profile } = useProfile();
 
+  const isAvatarPicPresent = !!profile.avatar;
+
   const onFileInputChange = (ev) => {
     const currFiles = ev.target.files;
 
@@ -53,6 +55,14 @@ const AvatarUpload = () => {
     }
     const updates = await getUserUpdates(profile.uid, 'avatar', null, database);
     database.ref().update(updates);
+
+    const deleteStorageRef = storage.ref(`profiles/${profile.uid}`);
+    deleteStorageRef
+      .child('avatar')
+      .delete()
+      .then(() => {
+        Alert.info('Avatar removed successfully', 4000);
+      });
   };
 
   const onUploadClick = async () => {
@@ -111,10 +121,12 @@ const AvatarUpload = () => {
             onChange={onFileInputChange}
           />
         </label>
+
         <Button
           appearance="ghost"
           className="mt-3"
           color="yellow"
+          disabled={!isAvatarPicPresent}
           onClick={onDeleteAvatarClick}
         >
           <Icon icon="trash" />

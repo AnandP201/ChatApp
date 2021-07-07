@@ -5,6 +5,20 @@ import ProfileAvatar from '../ProfileAvatar';
 const RoomItem = ({ room }) => {
   const { createdAt, name, lastMessage } = room;
 
+  const acceptedImgTypes = ['image/png', 'image/jpeg', 'image/pjpeg'];
+
+  const isFile = 'file' in lastMessage;
+
+  const isAudio =
+    isFile && !lastMessage.file.contentType.localeCompare('audio/mp3');
+
+  const isText = 'text' in lastMessage;
+
+  const isImage =
+    isFile && acceptedImgTypes.includes(lastMessage.file.contentType);
+
+  const isDoc = !isImage && !isAudio && !isText;
+
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center">
@@ -31,7 +45,22 @@ const RoomItem = ({ room }) => {
 
             <div className="text-disappear ml-2">
               <div className="italic">{lastMessage.author.name}</div>
-              <span>{lastMessage.text}</span>
+              {isAudio && (
+                <span className="font-bolder">
+                  Audio message : <i>{lastMessage.file.name}</i>
+                </span>
+              )}
+              {isText && <span>{lastMessage.text}</span>}
+              {isImage && (
+                <span className="font-bolder">
+                  Image : <i>{lastMessage.file.name}</i>
+                </span>
+              )}
+              {isDoc && (
+                <span className="font-bolder">
+                  Document : <i>{lastMessage.file.name}</i>
+                </span>
+              )}
             </div>
           </>
         ) : (
