@@ -51,17 +51,7 @@ const AvatarUpload = () => {
       Alert.info('No avatar present', 3000);
       return;
     }
-
-    await database
-      .ref(`/profiles/${profile.uid}`)
-      .child('avatar')
-      .remove()
-      .then(() => {
-        Alert.info('Avatar successfully removed', 3000);
-      });
-
     const updates = await getUserUpdates(profile.uid, 'avatar', null, database);
-
     database.ref().update(updates);
   };
 
@@ -92,6 +82,7 @@ const AvatarUpload = () => {
       database.ref().update(updates);
 
       setIsLoading(false);
+      close();
       Alert.info('Avatar has been uploaded', 4000);
     } catch (err) {
       setIsLoading(false);
